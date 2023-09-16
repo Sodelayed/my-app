@@ -2,6 +2,7 @@ import styles from './App.module.css';
 import { useState } from 'react';
 
 let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+let operation = ['-', '+', '='];
 let a = 0;
 let b = 0;
 let sign;
@@ -9,7 +10,7 @@ let sign;
 export const App = () => {
 	let [value, setValue] = useState(0);
 	const onClick = (number) => {
-		setValue(value === 0 || value === undefined || value === '+' || value === '-' ? (value = number) : (value += `${number}`));
+		setValue(value === 0 || value === undefined || value === operation[0] || value === operation[1] ? (value = number) : (value += `${number}`));
 		setAnswer(answer === true ? !answer : answer);
 	};
 
@@ -17,22 +18,26 @@ export const App = () => {
 
 	const plus = () => {
 		a = Number(value);
-		sign = '+';
+		sign = operation[1];
 		setValue((value = sign));
 		setAnswer(answer === true ? !answer : answer);
 	};
 
 	const minus = () => {
 		a = Number(value);
-		sign = '-';
+		sign = operation[0];
 		setValue((value = sign));
 		setAnswer(answer === true ? !answer : answer);
 	};
 
 	const equal = () => {
 		b = Number(value);
-		setValue(sign === '+' ? (value = a + b) : (value = a - b));
+		setValue(sign === operation[1] ? (value = a + b) : (value = a - b));
 		setAnswer(!answer);
+	};
+	const reload = () => {
+		setValue((value = arr[9]));
+		setAnswer((answer = false));
 	};
 
 	return (
@@ -42,13 +47,13 @@ export const App = () => {
 			</div>
 			<div className={styles.keyboard}>
 				<button className={styles.func} onClick={plus}>
-					+
+					{operation[1]}
 				</button>
 				<button className={styles.func} onClick={minus}>
-					-
+					{operation[0]}
 				</button>
 				<button className={styles.func} onClick={equal}>
-					=
+					{operation[2]}
 				</button>
 
 				<button className={styles.button} onClick={() => onClick(arr[6])}>
@@ -84,7 +89,7 @@ export const App = () => {
 				<button className={styles.null} onClick={() => onClick(arr[9])}>
 					{arr[9]}
 				</button>
-				<button className={styles.del} onClick={() => setValue((value = arr[9]))}>
+				<button className={styles.del} onClick={reload}>
 					C
 				</button>
 			</div>
