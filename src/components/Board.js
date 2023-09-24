@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './Board.module.css';
 import { Cell } from './Cell';
 
@@ -10,4 +11,9 @@ export const Board = ({ cells, click }) => {
 			))}
 		</div>
 	);
+};
+
+Board.propTypes = {
+	cells: PropTypes.array,
+	click: PropTypes.func,
 };
