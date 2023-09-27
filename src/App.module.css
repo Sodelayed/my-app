@@ -3,37 +3,50 @@ body {
 	font-family: 'Permanent Marker', cursive;
 	text-align: center;
 }
-.wrapper {
-	min-height: 100vh;
+.regBlock {
+	margin: 50px auto;
+	border-radius: 3px;
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	padding: 20px 30px;
+	box-sizing: border-box;
+	width: 400px;
+}
+input {
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin-bottom: 10px;
 	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
+	box-sizing: border-box;
+	color: #2c3e50;
+	font-size: 13px;
 }
-.gameInfo {
-	margin: 0;
-	font-size: 36px;
-	color: rgb(0, 0, 0);
-}
-.refresh {
-	width: 200px;
-	height: 35px;
+.confirmButton {
+	width: 100px;
+	background: #27ae60;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
 	cursor: pointer;
-	color: rgb(253, 253, 253);
-	background-color: #000000;
-	border: 1px solid rgb(0, 0, 0);
-	padding: 0px;
+	padding: 10px;
+	margin: 10px 5px;
+	font-size: 14px;
 }
-.refresh:hover {
-	background-color: #aaefb7;
-	color: #070707;
-	transition: 0.3s all ease;
+.confirmButton:hover,
+.confirmButton.focus {
+	box-shadow:
+		0 0 0 2px white,
+		0 0 0 3px #27ae60;
 }
-.inv {
-	width: 200px;
-	height: 35px;
-	border: 1px solid rgb(0, 0, 0);
-	padding: 0px;
-	opacity: 0;
+.confirmButton:disabled,
+.btn:hover:disabled {
+	background: #ae4027;
+	border: 0 none;
+	cursor: not-allowed;
+}
+.errorLabel {
+	color: red;
+	text-decoration: underline;
+	margin-bottom: 5px;
 }
