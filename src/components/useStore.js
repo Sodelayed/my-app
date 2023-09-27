@@ -2,13 +2,12 @@ import { useState } from 'react';
 
 const initialState = {
 	email: '',
-	login: '',
 	password: '',
+	repeatPassword: '',
 };
 
 export const useStore = () => {
-	const [state, setState] =
-		useState(initialState);
+	const [state, setState] = useState(initialState);
 
 	return {
 		getState: () => state,

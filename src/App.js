@@ -3,17 +3,17 @@ import { useStore } from './components/useStore';
 import styles from './App.module.css';
 
 export const App = () => {
-	const [loginError, setLoginError] = useState(null);
-	let loginErrorMassage = '';
-
 	const [emailError, setEmailError] = useState(null);
 	let emailErrorMassage = '';
 
 	const [passwordError, setPasswordError] = useState(null);
 	let passwordErrorMassage = '';
 
+	const [repeatPasswordError, setRepeatPasswordError] = useState(null);
+	let repeatPasswordErrorMassage = '';
+
 	const { getState, updateState, resetState } = useStore();
-	const { email, login, password } = getState();
+	const { email, password, repeatPassword } = getState();
 
 	const submitButtonRef = useRef(null);
 
@@ -32,66 +32,54 @@ export const App = () => {
 			if (target.value.indexOf(' ') > 0) {
 				emailErrorMassage += 'Почта не должна содержать пробелы';
 			}
-			setEmailError(emailErrorMassage);
+		}
+		if (target.name === 'repeatPassword') {
+			if (target.value !== password) {
+				repeatPasswordErrorMassage = 'Пароль не совпадает';
+			}
 		}
 
-		if (target.name === 'login') {
-			if (!/^[\w_]*$/.test(target.value)) {
-				loginErrorMassage += ' Логин должен содержать только буквы, цифры и нижнее подчеркивание.';
-			}
-			if (login.length > 20) {
-				loginErrorMassage += ' Логин должен быть короче 20 символов.';
-			}
-			setLoginError(loginErrorMassage);
-		}
-		if (target.name === 'password') {
-			setPasswordError(passwordErrorMassage);
-		}
+		setEmailError(emailErrorMassage);
+		setRepeatPasswordError(repeatPasswordErrorMassage);
 	};
 
 	const onBlur = ({ target }) => {
 		if (target.name === 'email') {
-			if (target.value.length > 30) {
-				emailErrorMassage += ' Почта должна быть короче 30 символов.';
-			}
-			if (email.indexOf('.') < 0) {
-				emailErrorMassage += ' Почта должна содержать точку.';
-			}
-			if (email.indexOf('@') < 0) {
-				emailErrorMassage += ' Почта должна содержать символ @.';
-			}
 			if (!target.value) {
 				emailErrorMassage = ' Поле должно быть заполнено.';
+			} else {
+				if (target.value.length > 30) {
+					emailErrorMassage += ' Почта должна быть короче 30 символов.';
+				}
+				if (email.indexOf('.') < 0) {
+					emailErrorMassage += ' Почта должна содержать точку.';
+				}
+				if (email.indexOf('@') < 0) {
+					emailErrorMassage += ' Почта должна содержать символ @.';
+				}
+
+				if (target.value.indexOf('.ru') < 0 && target.value.indexOf('.com') < 0) {
+					emailErrorMassage += ` Некорректная почта. Доступные домены: '.ru' и '.com' `;
+				}
 			}
 			setEmailError(emailErrorMassage);
 		}
-
-		if (target.name === 'login') {
-			if (target.value.length < 3) {
-				loginErrorMassage = 'Логин должен быть больше 3 символов.';
-			}
-			if (!target.value) {
-				loginErrorMassage = 'Поле должно быть заполнено.';
-			}
-			setLoginError(loginErrorMassage);
-		}
-
 		if (target.name === 'password') {
-			if (target.value.length < 5) {
-				passwordErrorMassage = 'Пароль должен быть больше 5 символов.';
-			}
 			if (!target.value) {
 				passwordErrorMassage = 'Поле должно быть заполнено.';
+			} else {
+				if (target.value.length < 5) {
+					passwordErrorMassage = 'Пароль должен быть больше 5 символов.';
+				}
 			}
 			setPasswordError(passwordErrorMassage);
 		}
 	};
-	const focusOnButton = () => {
-		if (login && email && password && !loginError && !emailError && !passwordError) {
+	setInterval(() => {
+		if (!emailError && !passwordError && email && password && repeatPassword) {
 			submitButtonRef.current.focus();
 		}
-	};
-	setTimeout(focusOnButton, 3000);
+	}, 1000);
 
 	return (
 		<div className={styles.regBlock}>
@@ -99,14 +87,21 @@ export const App = () => {
 			<form onSubmit={onSubmit}>
 				<input name="email" type="email" value={email} onChange={onChange} onBlur={onBlur} placeholder="Email" />
 				{emailError && <div className={styles.errorLabel}>{emailError}</div>}
-				<input name="login" type="login" value={login} onChange={onChange} onBlur={onBlur} placeholder="Login" />
-				{loginError && <div className={styles.errorLabel}>{loginError}</div>}
 				<input name="password" type="password" value={password} onChange={onChange} onBlur={onBlur} placeholder="Password" />
 				{passwordError && <div className={styles.errorLabel}>{passwordError}</div>}
+				<input
+					name="repeatPassword"
+					type="password"
+					value={repeatPassword}
+					onChange={onChange}
+					onBlur={onBlur}
+					placeholder="Repeat your password"
+				/>
+				{repeatPasswordError && <div className={styles.errorLabel}>{repeatPasswordError}</div>}
 				<button
 					className={styles.confirmButton}
 					type="submit"
-					disabled={!!emailError || !!loginError || !!passwordError}
+					disabled={!!emailError || !!repeatPasswordError || !!passwordError || !email || !password || !repeatPassword}
 					ref={submitButtonRef}
 				>
 					Создать
