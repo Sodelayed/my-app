@@ -4,13 +4,10 @@ import styles from './App.module.css';
 
 export const App = () => {
 	const [emailError, setEmailError] = useState(null);
-	let emailErrorMassage = '';
 
 	const [passwordError, setPasswordError] = useState(null);
-	let passwordErrorMassage = '';
 
 	const [repeatPasswordError, setRepeatPasswordError] = useState(null);
-	let repeatPasswordErrorMassage = '';
 
 	const { getState, updateState, resetState } = useStore();
 	const { email, password, repeatPassword } = getState();
@@ -28,9 +25,20 @@ export const App = () => {
 
 	const onChange = ({ target }) => {
 		updateState(target.name, target.value);
+		let emailErrorMassage = '';
+		let repeatPasswordErrorMassage = '';
 		if (target.name === 'email') {
 			if (target.value.indexOf(' ') > 0) {
 				emailErrorMassage += 'Почта не должна содержать пробелы';
+			}
+			if (target.value.indexOf('.') < 0) {
+				emailErrorMassage += ' Почта должна содержать точку.';
+			}
+			if (target.value.indexOf('@') < 0) {
+				emailErrorMassage += ' Почта должна содержать символ @.';
+			}
+			if (target.value.indexOf('.ru') < 0 && target.value.indexOf('.com') < 0) {
+				emailErrorMassage += ` Некорректная почта. Доступные домены: '.ru' и '.com' `;
 			}
 		}
 		if (target.name === 'repeatPassword') {
@@ -38,28 +46,19 @@ export const App = () => {
 				repeatPasswordErrorMassage = 'Пароль не совпадает';
 			}
 		}
-
 		setEmailError(emailErrorMassage);
 		setRepeatPasswordError(repeatPasswordErrorMassage);
 	};
 
 	const onBlur = ({ target }) => {
+		let emailErrorMassage = '';
+		let passwordErrorMassage = '';
 		if (target.name === 'email') {
 			if (!target.value) {
 				emailErrorMassage = ' Поле должно быть заполнено.';
 			} else {
 				if (target.value.length > 30) {
 					emailErrorMassage += ' Почта должна быть короче 30 символов.';
-				}
-				if (email.indexOf('.') < 0) {
-					emailErrorMassage += ' Почта должна содержать точку.';
-				}
-				if (email.indexOf('@') < 0) {
-					emailErrorMassage += ' Почта должна содержать символ @.';
-				}
-
-				if (target.value.indexOf('.ru') < 0 && target.value.indexOf('.com') < 0) {
-					emailErrorMassage += ` Некорректная почта. Доступные домены: '.ru' и '.com' `;
 				}
 			}
 			setEmailError(emailErrorMassage);
@@ -75,7 +74,7 @@ export const App = () => {
 			setPasswordError(passwordErrorMassage);
 		}
 	};
-	setInterval(() => {
+	setTimeout(() => {
 		if (!emailError && !passwordError && email && password && repeatPassword) {
 			submitButtonRef.current.focus();
 		}
