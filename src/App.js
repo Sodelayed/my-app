@@ -44,6 +44,9 @@ export const App = () => {
 			}
 			setLoginError(loginErrorMassage);
 		}
+		if (target.name === 'password') {
+			setPasswordError(passwordErrorMassage);
+		}
 	};
 
 	const onBlur = ({ target }) => {
@@ -65,19 +68,21 @@ export const App = () => {
 
 		if (target.name === 'login') {
 			if (target.value.length < 3) {
-				loginErrorMassage += ' Логин должен быть больше 3 символов.';
+				loginErrorMassage = 'Логин должен быть больше 3 символов.';
 			}
 			if (!target.value) {
-				loginErrorMassage = ' Поле должно быть заполнено.';
+				loginErrorMassage = 'Поле должно быть заполнено.';
 			}
 			setLoginError(loginErrorMassage);
 		}
 
 		if (target.name === 'password') {
-			if (!target.value) {
-				passwordErrorMassage = ' Поле должно быть заполнено.';
+			if (target.value.length < 5) {
+				passwordErrorMassage = 'Пароль должен быть больше 5 символов.';
 			}
-
+			if (!target.value) {
+				passwordErrorMassage = 'Поле должно быть заполнено.';
+			}
 			setPasswordError(passwordErrorMassage);
 		}
 	};
