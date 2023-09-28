@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from './components/useStore';
 import styles from './App.module.css';
 
@@ -13,7 +13,12 @@ export const App = () => {
 	const { email, password, repeatPassword } = getState();
 
 	const submitButtonRef = useRef(null);
+	const passwordRef = useRef(null);
+	const repeatPasswordRef = useRef(null);
 
+	let emailErrorMassage = '';
+	let repeatPasswordErrorMassage = '';
+	let passwordErrorMassage = '';
 	const onSubmit = (event) => {
 		event.preventDefault();
 		sendFormData(getState());
@@ -25,9 +30,11 @@ export const App = () => {
 
 	const onChange = ({ target }) => {
 		updateState(target.name, target.value);
-		let emailErrorMassage = '';
-		let repeatPasswordErrorMassage = '';
+
 		if (target.name === 'email') {
+			if (target.value.indexOf('.ru') < 0 && target.value.indexOf('.com') < 0) {
+				emailErrorMassage += ` Некорректная почта. Доступные домены: '.ru' и '.com' `;
+			}
 			if (target.value.indexOf(' ') > 0) {
 				emailErrorMassage += 'Почта не должна содержать пробелы';
 			}
@@ -37,26 +44,33 @@ export const App = () => {
 			if (target.value.indexOf('@') < 0) {
 				emailErrorMassage += ' Почта должна содержать символ @.';
 			}
-			if (target.value.indexOf('.ru') < 0 && target.value.indexOf('.com') < 0) {
-				emailErrorMassage += ` Некорректная почта. Доступные домены: '.ru' и '.com' `;
-			}
+
+			setEmailError(emailErrorMassage);
 		}
 		if (target.name === 'repeatPassword') {
-			if (target.value !== password) {
+			if (passwordRef.current.value !== repeatPasswordRef.current.value) {
 				repeatPasswordErrorMassage = 'Пароль не совпадает';
+			} else {
+				repeatPasswordErrorMassage = '';
 			}
+			setRepeatPasswordError(repeatPasswordErrorMassage);
 		}
-		setEmailError(emailErrorMassage);
-		setRepeatPasswordError(repeatPasswordErrorMassage);
 	};
 
 	const onBlur = ({ target }) => {
-		let emailErrorMassage = '';
-		let passwordErrorMassage = '';
 		if (target.name === 'email') {
 			if (!target.value) {
 				emailErrorMassage = ' Поле должно быть заполнено.';
 			} else {
+				if (target.value.indexOf('.') < 0) {
+					emailErrorMassage += ' Почта должна содержать точку.';
+				}
+				if (target.value.indexOf('@') < 0) {
+					emailErrorMassage += ' Почта должна содержать символ @.';
+				}
+				if (target.value.indexOf('.ru') < 0 && target.value.indexOf('.com') < 0) {
+					emailErrorMassage += ` Некорректная почта. Доступные домены: '.ru' и '.com' `;
+				}
 				if (target.value.length > 30) {
 					emailErrorMassage += ' Почта должна быть короче 30 символов.';
 				}
@@ -67,18 +81,20 @@ export const App = () => {
 			if (!target.value) {
 				passwordErrorMassage = 'Поле должно быть заполнено.';
 			} else {
-				if (target.value.length < 5) {
+				if (target.value.length <= 5) {
 					passwordErrorMassage = 'Пароль должен быть больше 5 символов.';
 				}
 			}
 			setPasswordError(passwordErrorMassage);
 		}
 	};
-	setTimeout(() => {
-		if (!emailError && !passwordError && email && password && repeatPassword) {
-			submitButtonRef.current.focus();
+	useEffect(() => {
+		if (password === repeatPassword) {
+			if (email && password && repeatPassword && !emailError && !passwordError && !repeatPasswordError) {
+				submitButtonRef.current.focus();
+			}
 		}
-	}, 1000);
+	}, [email, password, repeatPassword, emailError, passwordError, repeatPasswordError]);
 
 	return (
 		<div className={styles.regBlock}>
@@ -86,9 +102,18 @@ export const App = () => {
 			<form onSubmit={onSubmit}>
 				<input name="email" type="email" value={email} onChange={onChange} onBlur={onBlur} placeholder="Email" />
 				{emailError && <div className={styles.errorLabel}>{emailError}</div>}
-				<input name="password" type="password" value={password} onChange={onChange} onBlur={onBlur} placeholder="Password" />
+				<input
+					ref={passwordRef}
+					name="password"
+					type="password"
+					value={password}
+					onChange={onChange}
+					onBlur={onBlur}
+					placeholder="Password"
+				/>
 				{passwordError && <div className={styles.errorLabel}>{passwordError}</div>}
 				<input
+					ref={repeatPasswordRef}
 					name="repeatPassword"
 					type="password"
 					value={repeatPassword}
