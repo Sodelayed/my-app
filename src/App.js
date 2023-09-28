@@ -16,9 +16,9 @@ export const App = () => {
 	const passwordRef = useRef(null);
 	const repeatPasswordRef = useRef(null);
 
-	let emailErrorMassage = '';
-	let repeatPasswordErrorMassage = '';
-	let passwordErrorMassage = '';
+	let emailErrorMessage = '';
+	let repeatPasswordErrorMessage = '';
+	let passwordErrorMessage = '';
 	const onSubmit = (event) => {
 		event.preventDefault();
 		sendFormData(getState());
@@ -27,67 +27,62 @@ export const App = () => {
 		console.log(form);
 		resetState();
 	};
+	const emailCheck = (emailText) => {
+		if (emailText.indexOf('.ru') < 0 && emailText.indexOf('.com') < 0) {
+			emailErrorMessage += ` Некорректная почта. Доступные домены: '.ru' и '.com' `;
+		}
+		if (emailText.indexOf(' ') > 0) {
+			emailErrorMessage += 'Почта не должна содержать пробелы';
+		}
+		if (emailText.indexOf('.') < 0) {
+			emailErrorMessage += ' Почта должна содержать точку.';
+		}
+		if (emailText.indexOf('@') < 0) {
+			emailErrorMessage += ' Почта должна содержать символ @.';
+		}
+	};
 
 	const onChange = ({ target }) => {
 		updateState(target.name, target.value);
 
 		if (target.name === 'email') {
-			if (target.value.indexOf('.ru') < 0 && target.value.indexOf('.com') < 0) {
-				emailErrorMassage += ` Некорректная почта. Доступные домены: '.ru' и '.com' `;
-			}
-			if (target.value.indexOf(' ') > 0) {
-				emailErrorMassage += 'Почта не должна содержать пробелы';
-			}
-			if (target.value.indexOf('.') < 0) {
-				emailErrorMassage += ' Почта должна содержать точку.';
-			}
-			if (target.value.indexOf('@') < 0) {
-				emailErrorMassage += ' Почта должна содержать символ @.';
-			}
-
-			setEmailError(emailErrorMassage);
+			emailCheck(target.value);
+			setEmailError(emailErrorMessage);
 		}
 		if (target.name === 'repeatPassword') {
 			if (passwordRef.current.value !== repeatPasswordRef.current.value) {
-				repeatPasswordErrorMassage = 'Пароль не совпадает';
+				repeatPasswordErrorMessage = 'Пароль не совпадает';
 			} else {
-				repeatPasswordErrorMassage = '';
+				repeatPasswordErrorMessage = '';
 			}
-			setRepeatPasswordError(repeatPasswordErrorMassage);
+			setRepeatPasswordError(repeatPasswordErrorMessage);
 		}
 	};
 
 	const onBlur = ({ target }) => {
 		if (target.name === 'email') {
 			if (!target.value) {
-				emailErrorMassage = ' Поле должно быть заполнено.';
+				emailErrorMessage = ' Поле должно быть заполнено.';
 			} else {
-				if (target.value.indexOf('.') < 0) {
-					emailErrorMassage += ' Почта должна содержать точку.';
-				}
-				if (target.value.indexOf('@') < 0) {
-					emailErrorMassage += ' Почта должна содержать символ @.';
-				}
-				if (target.value.indexOf('.ru') < 0 && target.value.indexOf('.com') < 0) {
-					emailErrorMassage += ` Некорректная почта. Доступные домены: '.ru' и '.com' `;
-				}
+				emailCheck(target.value);
 				if (target.value.length > 30) {
-					emailErrorMassage += ' Почта должна быть короче 30 символов.';
+					emailErrorMessage += ' Почта должна быть короче 30 символов.';
 				}
 			}
-			setEmailError(emailErrorMassage);
+			setEmailError(emailErrorMessage);
 		}
 		if (target.name === 'password') {
 			if (!target.value) {
-				passwordErrorMassage = 'Поле должно быть заполнено.';
+				passwordErrorMessage = 'Поле должно быть заполнено.';
 			} else {
 				if (target.value.length <= 5) {
-					passwordErrorMassage = 'Пароль должен быть больше 5 символов.';
+					passwordErrorMessage = 'Пароль должен быть больше 5 символов.';
 				}
 			}
-			setPasswordError(passwordErrorMassage);
+			setPasswordError(passwordErrorMessage);
 		}
 	};
+
 	useEffect(() => {
 		if (password === repeatPassword) {
 			if (email && password && repeatPassword && !emailError && !passwordError && !repeatPasswordError) {
