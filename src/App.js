@@ -94,6 +94,7 @@ export const App = () => {
 	return (
 		<div className={styles.regBlock}>
 			<h2> CREATE NEW ACCOUNT</h2>
+			<h4> Create React App</h4>
 			<form onSubmit={onSubmit}>
 				<input name="email" type="email" value={email} onChange={onChange} onBlur={onBlur} placeholder="Email" />
 				{emailError && <div className={styles.errorLabel}>{emailError}</div>}
