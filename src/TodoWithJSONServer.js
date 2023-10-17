@@ -1,35 +1,25 @@
 import React, { useState } from 'react';
 import styles from './App.module.css';
-import { useRequestGetTask, useRequestAddTask, useRequestUpdateTask, useRequestDeleteTask } from './components/hooks.js';
+import { useRequestGetTask, useRequestAddTask, useRequestUpdateTask, useRequestDeleteTask } from './hooks';
+import { Footer } from './components/Footer';
 export const TodoWithJSONServer = () => {
-	const [value, setValue] = useState('');
-	const [inputForNewTask, setInputForNewTask] = useState('');
 	const [refresh, setRefresh] = useState(false);
-	const [taskId, setTaskId] = useState(0);
 	const [checked, setChecked] = useState(false);
 	const [searchButton, setSearchButton] = useState(false);
 	const [searchInputValue, setSearchInputValue] = useState('');
+	const [inputForNewTaskName, setInputForNewTaskName] = useState('');
 
-	const onChange = ({ target }) => setValue(target.value);
-	const onChangeTaskName = ({ target }) => setInputForNewTask(target.value);
-	const onChangeSearchInput = ({ target }) => setSearchInputValue(target.value);
-
-	const openModal = ({ target }) => {
-		setCloseOverlay(!closeOverlay);
-		const targetTask = tasks.filter(({ id }) => target.id === `${id}`);
-		setInputForNewTask(targetTask[0].task);
-		setTaskId(target.id);
-	};
+	const [inputForNewTask, setInputForNewTask] = useState('');
 
 	const { tasks } = useRequestGetTask(refresh, checked, searchButton, searchInputValue);
-	const { requestAddTask } = useRequestAddTask(value);
+	const { requestAddTask } = useRequestAddTask(inputForNewTask);
 	const requestDelete = useRequestDeleteTask(refresh, setRefresh);
-	const { closeOverlay, setCloseOverlay, requestUpdateTask } = useRequestUpdateTask(
-		inputForNewTask,
-		setInputForNewTask,
+	const { closeOverlay, setCloseOverlay, requestUpdateTask, openModal } = useRequestUpdateTask(
+		inputForNewTaskName,
+		setInputForNewTaskName,
 		refresh,
 		setRefresh,
-		taskId,
+		tasks,
 	);
 
 	return (
@@ -37,7 +27,11 @@ export const TodoWithJSONServer = () => {
 			<div className={closeOverlay ? styles.overlayHidden : styles.overlay}>
 				<div className={styles.deleteModal}>
 					<h3 className={styles.deleteModalQuestion}>Измените название задачи</h3>
-					<input className={styles.modalChanger} value={inputForNewTask} onChange={onChangeTaskName}></input>
+					<input
+						className={styles.modalChanger}
+						value={inputForNewTaskName}
+						onChange={(e) => setInputForNewTaskName(e.target.value)}
+					></input>
 					<div className={styles.deleteButton}>
 						<button className={styles.canselButton} onClick={() => setCloseOverlay(!closeOverlay)}>
 							Отмена
@@ -50,7 +44,12 @@ export const TodoWithJSONServer = () => {
 			</div>
 			<div className={styles.todoHeader}>Todo List</div>
 			<form className={styles.todoForm}>
-				<input className={styles.todoInput} value={value} onChange={onChange} placeholder="Добавь новую задачу"></input>
+				<input
+					className={styles.todoInput}
+					value={inputForNewTask}
+					onChange={(e) => setInputForNewTask(e.target.value)}
+					placeholder="Добавь новую задачу"
+				></input>
 				<button className={styles.addNewTask} onClick={requestAddTask} type="submit">
 					Добавить задачу
 				</button>
@@ -60,7 +59,7 @@ export const TodoWithJSONServer = () => {
 					<div className={styles.task} key={id}>
 						<div id={id}>{task}</div>
 						<div>
-							<button id={id} className={styles.changer} onClick={openModal}>
+							<button id={id} className={styles.changer} onClick={(e) => openModal(e.target)}>
 								✎
 							</button>
 							<button id={id} className={styles.deleter} onClick={(e) => requestDelete(e.target)}>
@@ -70,21 +69,14 @@ export const TodoWithJSONServer = () => {
 					</div>
 				))}
 			</div>
-			<div className={styles.footer}>
-				<div className={styles.searchContainer}>
-					<button className={styles.searchButton} onClick={() => setSearchButton(!searchButton)}>
-						🔍︎
-					</button>
-					{searchButton && <input className={styles.searchInput} value={searchInputValue} onChange={onChangeSearchInput}></input>}
-				</div>
-				<div className={styles.sortTask}>
-					<div>Сортировать:</div>
-					<label className={styles.switch}>
-						<input onChange={() => setChecked(!checked)} checked={checked} type="checkbox"></input>
-						<span className={styles.slider}></span>
-					</label>
-				</div>
-			</div>
+			<Footer
+				searchButton={searchButton}
+				setSearchButton={setSearchButton}
+				searchInputValue={searchInputValue}
+				setSearchInputValue={setSearchInputValue}
+				checked={checked}
+				setChecked={setChecked}
+			/>
 		</div>
 	);
 };
