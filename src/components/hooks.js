@@ -29,7 +29,7 @@ export const useRequestGetTask = (refresh, checked, searchButton, searchInputVal
 			});
 	}, [refresh, checked, searchButton, searchInputValue]);
 
-	return { tasks };
+	return { tasks, setTasks };
 };
 
 export const useRequestAddTask = (value) => {
