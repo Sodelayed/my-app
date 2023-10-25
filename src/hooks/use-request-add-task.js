@@ -1,13 +1,20 @@
-export const useRequestAddTask = (value) => {
+import { useState } from 'react';
+export const useRequestAddTask = ({ inputForNewTask, refreshTasksList, setRefreshTasksList }) => {
+	const [addTaskError, setAddTaskError] = useState(false);
+
 	const requestAddTask = () => {
-		fetch('http://localhost:3005/tasks', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify({
-				task: value,
-			}),
-		});
+		if (inputForNewTask !== '') {
+			setAddTaskError(false);
+			fetch('http://localhost:3005/tasks', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json;charset=utf-8' },
+				body: JSON.stringify({
+					task: inputForNewTask,
+					discription: '',
+				}),
+			}).finally(setRefreshTasksList(!refreshTasksList));
+		} else setAddTaskError(true);
 	};
 
-	return { requestAddTask };
+	return { requestAddTask, addTaskError };
 };

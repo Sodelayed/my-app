@@ -1,8 +1,8 @@
-export const useRequestDeleteTask = (refresh, setRefresh) => {
-	const requestDelete = (target) => {
-		fetch(`http://localhost:3005/tasks/${target.id}`, {
+export const useRequestDeleteTask = (id) => {
+	const requestDelete = () => {
+		fetch(`http://localhost:3005/tasks/${id}`, {
 			method: 'DELETE',
-		}).then(() => setRefresh(!refresh));
+		});
 	};
-	return requestDelete;
+	return { requestDelete };
 };

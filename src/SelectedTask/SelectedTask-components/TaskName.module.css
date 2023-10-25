@@ -1,0 +1,25 @@
+.taskName,
+.taskNameChanger {
+	font-weight: normal;
+	font-size: 1.8rem;
+	letter-spacing: 0.05em;
+	text-align: center;
+	box-sizing: border-box;
+	margin: auto;
+	width: 500px;
+	min-height: fit-content;
+	padding: 15px;
+	background-color: #ff6666;
+	color: #fff;
+	border: none;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	resize: none;
+	overflow: hidden;
+}
+.taskNameChanger {
+	background-color: #faabab;
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-radius: 15px;
+	color: rgb(32, 22, 22);
+	cursor: pointer;
+}

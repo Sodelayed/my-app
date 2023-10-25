@@ -1,0 +1,51 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+body {
+	background: #f7f1f1;
+	font-size: 1.1rem;
+	font-family: 'Quicksand', sans-serif;
+	height: 100%;
+}
+.todoList {
+	margin: 4rem auto;
+	padding: 2rem 3rem 3rem;
+	max-width: 500px;
+	background: #ff6666;
+	color: #fff;
+	box-shadow: -20px -20px 0px 0px rgba(100, 100, 100, 0.1);
+}
+.todoHeader {
+	font-weight: normal;
+	font-size: 2.6rem;
+	letter-spacing: 0.05em;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.tasksContainer {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.task {
+	display: flex;
+	padding: 10px;
+	justify-content: space-between;
+	background-color: rgba(255, 255, 255, 0.2);
+	border-radius: 15px;
+	margin-bottom: 10px;
+}
+a {
+	color: white;
+	text-decoration: none;
+}
+a:hover {
+	transition: 0.1s ease;
+	color: rgba(255, 255, 255, 0.7);
+}
+.task:hover {
+	transition: 0.5s ease;
+	background-color: rgba(255, 255, 255, 0.1);
+}
