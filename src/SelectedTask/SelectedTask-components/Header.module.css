@@ -1,0 +1,41 @@
+.taskHeader {
+	font-weight: normal;
+	font-size: 2.6rem;
+	letter-spacing: 0.25em;
+	text-align: center;
+	user-select: none;
+}
+header {
+	position: relative;
+	bottom: 32px;
+	right: 48px;
+	padding-top: 5px;
+	display: flex;
+	width: 595.89px;
+	justify-content: space-between;
+	border-radius: 25px 25px 0px 0px;
+	color: #fff;
+	border-bottom: 3px solid rgba(255, 255, 255, 0.7);
+}
+
+.editButton,
+.deleteButton,
+.linkButton {
+	color: #fff;
+	width: 40px;
+	height: 40px;
+}
+.editButton:hover,
+.deleteButton:hover,
+.linkButton:hover {
+	color: rgba(255, 255, 255, 0.7);
+	cursor: pointer;
+}
+
+.linkButton {
+	margin-left: 5px;
+}
+.editButton,
+.deleteButton {
+	margin-right: 10px;
+}
