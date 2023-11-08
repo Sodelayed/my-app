@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-export const useRequestGetTasksList = (
-	checked,
-	searchButton,
-	searchInputValue,
-	refreshTasksList,
-) => {
+export const useRequestGetTask = (refresh, checked, searchButton, searchInputValue) => {
 	const [tasks, setTasks] = useState([]);
 
 	useEffect(() => {
@@ -35,25 +29,7 @@ export const useRequestGetTasksList = (
 				}
 				setTasks(result);
 			});
-	}, [refreshTasksList, checked, searchButton, searchInputValue]);
+	}, [refresh, checked, searchButton, searchInputValue]);
 
 	return { tasks };
-};
-
-export const useRequestGetTask = (id) => {
-	const [taskName, setTaskName] = useState('');
-	const [discription, setDiscription] = useState('');
-	const navigate = useNavigate();
-	useEffect(() => {
-		fetch(`http://localhost:3005/tasks/${id}`)
-			.then((resolve) => resolve.json())
-			.then((result) => {
-				if (result.task === undefined) {
-					return navigate('/404');
-				}
-				setTaskName(result.task);
-				setDiscription(result.discription);
-			});
-	}, [id, navigate]);
-	return { taskName, discription, setTaskName, setDiscription };
 };
