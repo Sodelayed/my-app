@@ -1,17 +1,7 @@
 import { appReducer } from './reducer';
+import { createStore } from 'redux';
 
-const createStore = (reducer) => {
-	let state;
-
-	return {
-		dispatch: (action) => {
-			state = reducer(state, action);
-			// console.log(state);
-		},
-		getState: () => state,
-	};
-};
-
-export const store = createStore(appReducer);
-
-store.dispatch({ type: 'INITIAL' });
+export const store = createStore(
+	appReducer,
+	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+);

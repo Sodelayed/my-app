@@ -1,10 +1,11 @@
 import React from 'react';
 import styles from './Board.module.css';
 import { Cell } from './Cell';
-import { store } from '../store';
+import { useSelector } from 'react-redux';
+import { selectBoard } from '../selectors';
 
 export const Board = () => {
-	const { board } = store.getState();
+	const board = useSelector(selectBoard);
 	return (
 		<div className={styles.board}>
 			{board.map((el, index) => (

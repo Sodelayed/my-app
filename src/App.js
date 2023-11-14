@@ -1,40 +1,37 @@
-import React, { useState } from 'react';
-import { store } from './store';
+import React from 'react';
 import { Board } from './components/Board';
+import { useSelector, useDispatch } from 'react-redux';
+import { REFRESH_GAME } from './actions';
+import { selectWinner, selectTurn, selectXTurn } from './selectors';
 
 import styles from './App.module.css';
 export const App = () => {
-	const [arr, setArr] = useState(store.getState());
+	const winner = useSelector(selectWinner);
+	const turn = useSelector(selectTurn);
+	const xTurn = useSelector(selectXTurn);
+	const dispatch = useDispatch();
 
-	const func = () => {
-		store.dispatch({ type: 'SET_DEFAULT' });
-		setArr(store.getState());
+	const refreshGame = () => {
+		dispatch(REFRESH_GAME);
+	};
+
+	const headerInfo = () => {
+		if (winner) {
+			return `Победитель ${winner} !`;
+		} else if (turn === 9) {
+			return 'Ничья!';
+		} else {
+			return `Сейчас ходит ${xTurn ? 'X' : 'O'}`;
+		}
 	};
 
 	return (
 		<div className={styles.wrapper}>
-			<p className={styles.gameInfo}>
-				{arr.winner
-					? `Победитель ${arr.winner} !`
-					: arr.turn === 9
-					? 'Ничья!'
-					: `Сейчас ходит ${arr.xTurn ? 'X' : 'O'}`}
-			</p>
-			<div onClick={func}>
-				<Board />
-			</div>
+			<p className={styles.gameInfo}>{headerInfo()}</p>
+			<Board />
 			<button
-				className={
-					arr.winner
-						? styles.refresh
-						: arr.turn === 9
-						? styles.refresh
-						: styles.inv
-				}
-				onClick={() => {
-					store.dispatch({ type: 'SET_INITIALSTATE' });
-					setArr(store.getState());
-				}}
+				className={winner || turn === 9 ? styles.refresh : styles.inv}
+				onClick={refreshGame}
 			>
 				Начать заново
 			</button>

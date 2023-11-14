@@ -1,24 +1,24 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './Cell.module.css';
-import { store } from '../store';
-import { checkWinner } from './CheckWinner';
+import { useCheckWinner } from '../utils/useCheckWinner.js';
+import { selectBoard, selectXTurn, selectWinner } from '../selectors';
+import { STATE_BETWEEN_TURN } from '../actions';
 
 export const Cell = ({ id, value }) => {
+	const winner = useSelector(selectWinner);
+	const board = useSelector(selectBoard);
+	const xTurn = useSelector(selectXTurn);
+	const dispatch = useDispatch();
+	const { checkWinner } = useCheckWinner();
+
 	const click = (index) => {
-		const { board, xTurn, turn, winner } = store.getState();
+		console.log(winner);
 		const boardCopy = [...board];
 		if (winner || boardCopy[index]) return;
 		boardCopy[index] = xTurn ? 'X' : 'O';
-		store.dispatch({
-			type: 'SET_STATE',
-			payload: {
-				winner: winner,
-				board: boardCopy,
-				xTurn: !xTurn,
-				turn: turn + 1,
-			},
-		});
-		checkWinner();
+		checkWinner(boardCopy);
+		dispatch(STATE_BETWEEN_TURN(boardCopy));
 	};
 
 	return (

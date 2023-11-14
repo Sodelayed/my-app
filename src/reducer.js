@@ -6,19 +6,22 @@ const initialState = {
 };
 
 export const appReducer = (state = initialState, action) => {
-	const { type, payload } = action;
-
-	switch (type) {
-		case 'SET_STATE': {
-			return payload;
+	switch (action.type) {
+		case 'STATE_BETWEEN_TURN': {
+			return {
+				...state,
+				board: action.payload,
+				xTurn: !state.xTurn,
+				turn: state.turn + 1,
+			};
 		}
-		case 'SET_INITIALSTATE': {
+		case 'REFRESH_GAME': {
 			return initialState;
 		}
 		case 'SET_WINNER': {
 			return {
 				...state,
-				winner: payload,
+				winner: action.payload,
 			};
 		}
 		default:
