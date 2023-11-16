@@ -1,11 +1,9 @@
 import { selectInputForNewTaskName, selectTaskId } from '../selectors/appSelectors';
-import { useDispatch, useSelector } from 'react-redux';
-import { STATE_AFTER_UPDATE } from '../actions/appActions';
+import { useSelector } from 'react-redux';
 
 export const useRequestUpdateTask = () => {
 	const inputForNewTaskName = useSelector(selectInputForNewTaskName);
 	const taskId = useSelector(selectTaskId);
-	const dispatch = useDispatch();
 
 	const requestUpdateTask = () => {
 		fetch(`http://localhost:3005/tasks/${taskId}`, {
@@ -14,7 +12,7 @@ export const useRequestUpdateTask = () => {
 			body: JSON.stringify({
 				task: inputForNewTaskName,
 			}),
-		}).then(() => dispatch(STATE_AFTER_UPDATE));
+		});
 	};
 
 	return { requestUpdateTask };

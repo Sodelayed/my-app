@@ -56,7 +56,6 @@ export const appReducer = (state = initialAppState, action) => {
 		case 'STATE_AFTER_UPDATE': {
 			return {
 				...state,
-				refresh: !state.refresh,
 				closeOverlay: !state.closeOverlay,
 			};
 		}
@@ -66,6 +65,12 @@ export const appReducer = (state = initialAppState, action) => {
 				closeOverlay: !state.closeOverlay,
 				inputForNewTaskName: action.payload.delta1,
 				taskId: action.payload.delta2,
+			};
+		}
+		case 'ADD_TASK': {
+			return {
+				...state,
+				inputForNewTask: '',
 			};
 		}
 		default:

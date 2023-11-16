@@ -4,6 +4,7 @@ import { useRequestAddTask } from '../hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectInputForNewTask } from '../selectors/appSelectors';
 import { SET_INPUTFORNEWTASK } from '../actions/appActions';
+import { ADD_TASK } from '../actions/tasksActions';
 
 export const Form = () => {
 	const inputForNewTask = useSelector(selectInputForNewTask);
@@ -21,8 +22,11 @@ export const Form = () => {
 				></input>
 				<button
 					className={styles.addNewTask}
-					onClick={requestAddTask}
-					type="submit"
+					onClick={() => {
+						requestAddTask();
+						dispatch(ADD_TASK(inputForNewTask));
+					}}
+					type="button"
 				>
 					Добавить задачу
 				</button>

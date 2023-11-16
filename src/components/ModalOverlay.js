@@ -1,13 +1,22 @@
 import React from 'react';
 import styles from './ModalOverlay.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCloseOverlay, selectInputForNewTaskName } from '../selectors/appSelectors';
-import { SET_CLOSEOVERLAY, SET_INPUTFORNEWTASKNAME } from '../actions/appActions';
+import {
+	selectCloseOverlay,
+	selectInputForNewTaskName,
+	selectTaskId,
+} from '../selectors/appSelectors';
+import {
+	SET_CLOSEOVERLAY,
+	SET_INPUTFORNEWTASKNAME,
+	STATE_AFTER_UPDATE,
+} from '../actions/appActions';
 import { useRequestUpdateTask } from '../hooks';
 
 export const ModalOverlay = () => {
 	const closeOverlay = useSelector(selectCloseOverlay);
 	const inputForNewTaskName = useSelector(selectInputForNewTaskName);
+	const taskId = useSelector(selectTaskId);
 	const dispatch = useDispatch();
 
 	const { requestUpdateTask } = useRequestUpdateTask();
@@ -28,7 +37,13 @@ export const ModalOverlay = () => {
 					>
 						Отмена
 					</button>
-					<button className={styles.confirmButton} onClick={requestUpdateTask}>
+					<button
+						className={styles.confirmButton}
+						onClick={() => {
+							dispatch(STATE_AFTER_UPDATE(taskId, inputForNewTaskName));
+							requestUpdateTask();
+						}}
+					>
 						Изменить
 					</button>
 				</div>
