@@ -1,7 +1,10 @@
-import { appReducer } from './reducer';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import thunk from 'redux-thunk';
+import { appReducer, tasksReducer } from './reducers';
 
-export const store = createStore(
-	appReducer,
-	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-);
+const reducer = combineReducers({
+	appState: appReducer,
+	tasksState: tasksReducer,
+});
+
+export const store = createStore(reducer, applyMiddleware(thunk));

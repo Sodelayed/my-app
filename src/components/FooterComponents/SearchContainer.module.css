@@ -1,0 +1,20 @@
+.searchContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+}
+.searchButton {
+	background: none;
+	border: none;
+	color: white;
+	margin-right: 5px;
+	cursor: pointer;
+}
+.searchInput {
+	border: none;
+	border-radius: 5px;
+	padding: 8px;
+	font-family: 'Quicksand', sans-serif;
+	font-size: 14px;
+}

@@ -1,0 +1,97 @@
+.overlay {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-color: rgb(84, 103, 145, 0.6);
+	z-index: 1000;
+	transition: 0.2s ease;
+	opacity: 1;
+}
+
+.overlayHidden {
+	display: none;
+}
+
+.deleteModal {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	top: 0;
+	width: 50%;
+	height: fit-content;
+	padding: 15px 25px;
+
+	border: 2px solid #ffffff;
+	border-radius: 5px;
+	background-color: #546792;
+	transition: 0.3s ease-in;
+}
+
+.deleteModalQuestion {
+	font-size: 1rem;
+	line-height: 1.5rem;
+	color: #ffffff;
+	margin: 0;
+	margin-bottom: 15px;
+	text-align: center;
+}
+.modalChanger {
+	margin-bottom: 15px;
+	width: 25%;
+	height: 22px;
+	border-radius: 5px;
+	padding: 10px;
+	border: 0;
+	font-family: 'Quicksand', sans-serif;
+	font-size: 20px;
+}
+
+.canselButton {
+	cursor: pointer;
+
+	font-size: 1rem;
+	line-height: 1.5rem;
+
+	border: 1px solid #414f71;
+	border-radius: 5px;
+
+	background: #414f71;
+	color: #ffffff;
+	padding: 5px 10px;
+	margin-right: 10px;
+	transition: 0.3s ease;
+}
+
+.canselButton:hover,
+.confirmButton:hover {
+	box-shadow: 0 0 0 1px #ffffff;
+}
+
+.confirmButton {
+	cursor: pointer;
+
+	font-size: 1rem;
+	line-height: 1.5rem;
+
+	border-radius: 5px;
+
+	background: none;
+	color: #ffffff;
+	padding: 5px 10px;
+
+	transition: 0.3s ease;
+	background-color: #ff0000;
+	border: 1px solid #ff0000;
+	margin-left: 10px;
+}
